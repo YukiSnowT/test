@@ -22,7 +22,7 @@
         cursor: pointer;
     }
     .option{
-        margin: 0;
+        margin: 30px 0 0 0;
         font-weight: bold;
         font-size: 1.1em;
     }
@@ -30,6 +30,10 @@
 <body>
     <h2>ドラクエ風ドット文字ジェネレーター</h2>
     <p>入力したテキストをドラクエ風の文字画像に変換し、画像にして出力します。<br>※対応文字は全角ひらがな・一部記号のみ。<br>※オプションを変更したら、テキストを変更すると反映されます。</p>
+    <details>
+        <summary>使用可能文字一覧</summary>
+        「ゐ」「ゑ」「ゔ」を除くひらがなはすべて使用可能です。（「ぁぃぅぇぉ」のみ通常サイズになります）<br>、。ー！？゛゜・「」＊：…↑↓←→■□　通常通り使えます。<br>＋＠￥｛｝　特殊な記号に置き換わります。<br>罫線全般　枠線として使用可能です。太線と細線は同じ扱いですが、太い縦線（┃）のみ特殊文字になります。
+    </details>
     <p class = "option">オプション</p>
     <label for="fontC">文字色：</label>
     <select id="fontC">
@@ -1172,6 +1176,15 @@
         ctx.clearRect(x+40,y+70,10,10);
     }
 
+    const nameFreCE = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+30,y,20,120);
+        ctx.fillRect(x+60,y+50,40,10);
+        ctx.fillRect(x+60,y+60,10,10);
+        ctx.fillRect(x+60,y+70,30,10);
+        ctx.fillRect(x+60,y+80,10,10);
+        ctx.fillRect(x+60,y+90,40,10);
+    }
 
 
     //canvas表示
@@ -1476,7 +1489,7 @@
             nameSquF(x,y+30);
         }else if(moji==="□"){
             nameSquS(x,y+30);
-        }else if(moji==="│"||moji==="┃"){
+        }else if(moji==="│"){
             nameFreC(x,y);
         }else if(moji==="─"||moji==="━"){
             nameFreR(x,y);
@@ -1488,6 +1501,8 @@
             nameFreBL(x,y);
         }else if(moji==="┘"||moji==="┛"){
             nameFreBR(x,y);
+        }else if(moji==="┃"){
+            nameFreCE(x,y);
         }
     }
 
@@ -1511,7 +1526,7 @@
 
     main.addEventListener("input",filingMain);
     ////////// ここを変更//////////
-    nameFreBR(10,10); //最終的に消す
+    nameFreCE(10,10); //最終的に消す
     ////////// ここを変更//////////
     
 

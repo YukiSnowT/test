@@ -7,6 +7,9 @@
     <title>ドラクエ風ドット文字画像ジェネレーター</title>
 </head>
 <style>
+    p{
+        margin: 0;
+    }
     body{
         background-color: #ddd;
     }
@@ -26,13 +29,19 @@
         font-weight: bold;
         font-size: 1.1em;
     }
+    #sample{
+        margin-top: 40px;
+    }
+    .sample{
+        margin: 0 0 -15px -15px;
+    }
 </style>
 <body>
     <h2>ドラクエ風ドット文字ジェネレーター</h2>
     <p>入力したテキストをドラクエ風の文字画像に変換し、画像にして出力します。<br>※対応文字は全角ひらがな・一部記号のみ。<br>※オプションを変更したら、テキストを変更すると反映されます。</p>
     <details>
         <summary>使用可能文字一覧</summary>
-        「ゐ」「ゑ」「ゔ」を除くひらがな、数字、大文字のアルファベットが使用可能です。<br>（「ぁぃぅぇぉ」のみ通常サイズになります）<br>、。ー｜！？゛゜・「」＊：…↑↓←→■□　通常通り使えます。<br>＋＠￥｛｝　s t m o w h l r(半角)　特殊な記号に置き換わります。<br>罫線全般　枠線として使用可能です。太線と細線は同じ扱いですが、太い縦線（┃）のみ特殊文字になります。
+        「ゐ」「ゑ」を除くひらがな、カタカナ、数字、大文字のアルファベットが使用可能です。<br>（あ行の小文字のみ通常サイズになります）<br>、。ー｜！？゛゜・「」＊：…↑↓←→■□　通常通り使えます。<br>＋＠￥｛｝　s t m o w h l r(半角)　特殊な記号に置き換わります。<br>罫線全般　枠線として使用可能です。太線と細線は同じ扱いですが、太い縦線（┃）のみ特殊文字になります。
     </details>
     <p class = "option">オプション</p>
     <label for="fontC">文字色：</label>
@@ -69,9 +78,16 @@
         <summary>HELP</summary>
         文字色：文字の色を変更します。デフォルトは白。<br>枠線：文字を囲む枠線です。チェックを外すと枠線が消えます。<br>文字詰め：文字の左右幅を詰めます。文字によっては見辛くなるかも。<br>左右・上下余白：読んで字のごとく。上下余白は濁音・半濁音のバランスを取るために下部を広めにしています。
     </details>
+    <label for="sample" class = "sample">　サンプル画像の縮尺：</label>
+    <select id="sample">
+        <option value="0.1">0.1倍</option>
+        <option value="0.2" selected>0.2倍</option>
+        <option value="0.5">0.5倍</option>
+        <option value="1">原寸大</option>
+    </select>
     <p><label><br><textarea name="file_main" id="file_main" cols="30" rows="10" placeholder="文字を入力すると、この下にダウンロードリンクとサンプルが表示されます。"></textarea></label></p>
     <h3></h3>
-    <canvas id="dragon" width="90" height="90"></canvas>
+    <canvas id="dragon" width="0" height="0"></canvas>
 </body>
 <script>
 
@@ -83,17 +99,10 @@
     let flamecolor = "white";
     let main_value = null;
     let mojitsume = 0;
+    let bairitsu = 0.2;
     const main = document.getElementById("file_main");
     const canvas = document.getElementById("dragon");
     const ctx = canvas.getContext("2d");
-
-    
-
-    const filingMain = (e) =>{
-        main_value = e.target.value;
-        displayText(main_value);
-        linkMake();
-    } 
 
     const nameA = (x,y) =>{
         ctx.fillStyle = fontcolor
@@ -1964,11 +1973,225 @@
 
     const nameKanaHa = (x,y) =>{
         ctx.fillStyle = fontcolor;
-        ctx.fillRect(x+10,y+10,10,10);
+        ctx.fillRect(x+40,y+10,10,10);
+        ctx.fillRect(x+10,y+20,10,30);
+        ctx.fillRect(x+50,y+20,10,20);
+        ctx.fillRect(x+60,y+40,10,30);
+        ctx.fillRect(x,y+50,10,10);
+    }
+
+    const nameKanaHi = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x,y,10,70);
+        ctx.fillRect(x+30,y+20,30,10);
+        ctx.fillRect(x+10,y+30,30,10);
+        ctx.fillRect(x+10,y+70,50,10);
+    }
+
+    const nameKanaHu = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+10,60,10);
+        ctx.fillRect(x+60,y+20,10,20);
+        ctx.fillRect(x+50,y+40,10,20);
+        ctx.fillRect(x+40,y+60,10,10);
+        ctx.fillRect(x+20,y+70,20,10);
+    }
+
+    const nameKanaHe = (x,y) =>{
+        nameHe(x,y);
+    }
+
+    const nameKanaHo = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+30,y,10,80);
+        ctx.fillRect(x,y+20,70,10);
+        ctx.fillRect(x+10,y+40,10,20);
+        ctx.fillRect(x+50,y+40,10,10);
+        ctx.fillRect(x,y+60,10,10);
+        ctx.fillRect(x+60,y+50,10,20);
+    }
+
+    const nameKanaMa = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x,y+10,70,10);
+        ctx.fillRect(x+60,y+20,10,20);
+        ctx.fillRect(x+50,y+40,10,10);
+        ctx.fillRect(x+20,y+50,10,10);
+        ctx.fillRect(x+40,y+50,10,10);
+        ctx.fillRect(x+30,y+60,10,10);
+        ctx.fillRect(x+40,y+70,10,10);
+    }
+
+    const nameKanaMi = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+20,y,40,10);
+        ctx.fillRect(x+20,y+30,40,10);
+        ctx.fillRect(x+10,y+60,50,10);
+        ctx.fillRect(x+60,y+70,10,10);
+    }
+
+    const nameKanaMu = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+40,y+10,10,10);
+        ctx.fillRect(x+30,y+20,10,10);
+        ctx.fillRect(x+20,y+30,10,10);
+        ctx.fillRect(x+10,y+40,10,10);
+        ctx.fillRect(x,y+50,10,10);
+        ctx.fillRect(x+60,y+50,10,30);
+        ctx.fillRect(x,y+60,60,10);
+    }
+
+    const nameKanaMe = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+60,y,10,30);
+        ctx.fillRect(x+30,y+30,10,10);
+        ctx.fillRect(x+40,y+40,10,20);
+        ctx.fillRect(x+50,y+30,10,20);
+        ctx.fillRect(x+60,y+50,10,10);
+        ctx.fillRect(x+30,y+60,10,10);
+        ctx.fillRect(x+10,y+70,20,10);
+    }
+
+    const nameKanaMo = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x,y+10,60,10);
+        ctx.fillRect(x+20,y+20,10,50);
+        ctx.fillRect(x,y+40,70,10);
+        ctx.fillRect(x+20,y+70,50,10);
+    }
+
+    const nameKanaYa = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y,10,10);
+        ctx.fillRect(x+20,y+10,10,50);
+        ctx.fillRect(x,y+20,80,10);
+        ctx.fillRect(x+30,y+60,10,20);
+        ctx.fillRect(x+60,y+30,10,10);
+        ctx.fillRect(x+50,y+40,10,10);
+    }
+
+    const nameKanaYu = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+20,50,10);
+        ctx.fillRect(x+50,y+30,10,40);
+        ctx.fillRect(x,y+70,80,10);
+    }
+
+    const nameKanaYo = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+10,40,10);
+        ctx.fillRect(x+50,y+10,10,70);
+        ctx.fillRect(x+10,y+40,40,10);
+        ctx.fillRect(x+10,y+70,40,10);
+    }
+
+    const nameKanaRa = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+20,y+10,50,10);
+        ctx.fillRect(x+10,y+30,70,10);
+        ctx.fillRect(x+70,y+40,10,10);
+        ctx.fillRect(x+60,y+50,10,10);
+        ctx.fillRect(x+50,y+60,10,10);
+        ctx.fillRect(x+30,y+70,20,10);
+    }
+
+    const nameKanaRi = (x,y) =>{
+        nameRi(x,y);
+    }
+
+    const nameKanaRu = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+20,y+10,10,60);
+        ctx.fillRect(x+40,y+10,10,60);
+        ctx.fillRect(x+70,y+60,10,10);
+        ctx.fillRect(x+10,y+70,10,10);
+        ctx.fillRect(x+40,y+70,30,10);
+    }
+
+    const nameKanaRe = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+10,10,70);
+        ctx.fillRect(x+60,y+40,10,10);
+        ctx.fillRect(x+50,y+50,10,10);
+        ctx.fillRect(x+30,y+60,20,10);
+        ctx.fillRect(x+20,y+70,10,10);
+    }
+
+    const nameKanaRo = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+10,70,70);
+        ctx.clearRect(x+20,y+20,50,50);
+    }
+
+    const nameKanaWa = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x,y+10,70,10);
+        ctx.fillRect(x,y+20,10,20);
+        ctx.fillRect(x+60,y+20,10,40);
+        ctx.fillRect(x+50,y+60,10,10);
+        ctx.fillRect(x+20,y+70,30,10);
+    }
+
+    const nameKanaWo = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y,60,10);
+        ctx.fillRect(x+60,y+10,10,10);
+        ctx.fillRect(x+60,y+20,10,10);
+        ctx.fillRect(x+10,y+30,50,10);
+        ctx.fillRect(x+50,y+40,10,10);
+        ctx.fillRect(x+50,y+50,10,10);
+        ctx.fillRect(x+40,y+60,10,10);
+        ctx.fillRect(x+20,y+70,20,10);
+        ctx.fillRect(x+10,y+30,50,10);
+    }
+
+    const nameKanaNn = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+20,30,10);
+        ctx.fillRect(x+60,y+20,10,10);
+        ctx.fillRect(x+60,y+30,10,10);
+        ctx.fillRect(x+60,y+40,10,10);
+        ctx.fillRect(x+50,y+50,10,10);
+        ctx.fillRect(x+40,y+60,10,10);
+        ctx.fillRect(x+10,y+70,30,10);
+    }
+
+    const nameKanaXYa = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+20,y+30,10,10);
+        ctx.fillRect(x+10,y+40,50,10);
+        ctx.fillRect(x+30,y+50,10,10);
+        ctx.fillRect(x+50,y+50,10,10);
+        ctx.fillRect(x+30,y+60,10,10);
+        ctx.fillRect(x+30,y+70,10,10);
+    }
+
+    const nameKanaXYu = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+20,y+40,30,10);
+        ctx.fillRect(x+40,y+50,10,20);
+        ctx.fillRect(x+10,y+70,50,10);
+    }
+
+    const nameKanaXYo = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+30,30,10);
+        ctx.fillRect(x+40,y+30,10,50);
+        ctx.fillRect(x+10,y+50,30,10);
+        ctx.fillRect(x+10,y+70,30,10);
+    }
+
+    const nameKanaXTu = (x,y) =>{
+        ctx.fillStyle = fontcolor;
+        ctx.fillRect(x+10,y+30,10,20);
+        ctx.fillRect(x+30,y+30,10,20);
+        ctx.fillRect(x+50,y+30,10,30);
+        ctx.fillRect(x+40,y+60,20,10);
+        ctx.fillRect(x+20,y+70,20,10);
     }
 
     //canvas表示
-    const displayText = (text) =>{
+    const displayText = (text,bai) =>{
 
         //設定反映
         fontcolor = document.getElementById("fontC").value;
@@ -1981,7 +2204,6 @@
 
         padding_x = Number(document.getElementById("paddingLR").value);
         padding_y = Number(document.getElementById("paddingTB").value);
-
 
         let n = Array.from(text);
         let c = 0;
@@ -2002,27 +2224,37 @@
         }
         let waku = 0;
         if(wakusen){waku = 50;}
-        canvas.width = (Math.max.apply(null,r))*(120+mojitsume)+2*(padding_x+waku)-(50+mojitsume/2);
-        canvas.height = (c+1)*120+2*(padding_y+waku)-10+padding_b;
+
+        // canvas.width = (Math.max.apply(null,r))*(120+mojitsume)+2*(padding_x+waku)-(50+mojitsume/2);
+        // canvas.height = (c+1)*120+2*(padding_y+waku)-10+padding_b;
+
+        let cwidth = (Math.max.apply(null,r))*(120+mojitsume)+2*(padding_x+waku)-(50+mojitsume/2);
+
+        let cheight = (c+1)*120+2*(padding_y+waku)-10+padding_b;
+        canvas.width = cwidth*bai;
+        canvas.height = cheight*bai;
+
+        ctx.scale(bai, bai);
+
         loopText(n);
 
         //枠線を引く
         if(wakusen){
             ctx.fillStyle = flamecolor;
-            ctx.fillRect(10,10,canvas.width-20,20);
-            ctx.fillRect(10,canvas.height-30,canvas.width-20,20);
-            ctx.fillRect(10,30,20,canvas.height-40);
-            ctx.fillRect(canvas.width-30,30,20,canvas.height-40);
+            ctx.fillRect(10,10,cwidth-20,20);
+            ctx.fillRect(10,cheight-30,cwidth-20,20);
+            ctx.fillRect(10,30,20,cheight-40);
+            ctx.fillRect(cwidth-30,30,20,cheight-40);
 
             ctx.fillRect(30,30,10,10);
-            ctx.fillRect(canvas.width-40,30,10,10);
-            ctx.fillRect(30,canvas.height-40,10,10);
-            ctx.fillRect(canvas.width-40,canvas.height-40,10,10);
+            ctx.fillRect(cwidth-40,30,10,10);
+            ctx.fillRect(30,cheight-40,10,10);
+            ctx.fillRect(cwidth-40,cheight-40,10,10);
 
             ctx.clearRect(10,10,10,10)
-            ctx.clearRect(canvas.width-20,10,10,10)
-            ctx.clearRect(10,canvas.height-20,10,10)
-            ctx.clearRect(canvas.width-20,canvas.height-20,10,10)
+            ctx.clearRect(cwidth-20,10,10,10)
+            ctx.clearRect(10,cheight-20,10,10)
+            ctx.clearRect(cwidth-20,cheight-20,10,10)
         }
     }
 
@@ -2195,6 +2427,9 @@
         }else if(moji==="ぽ"){
             nameHo(x,y+30);
             nameHD(x+50,y+10);
+        }else if(moji==="ゔ"){
+            nameU(x,y+30);
+            nameDA(x+40,y);
         }else if(moji==="ぁ"){ //小文字作るならここを編集
             nameA(x,y+30);
         }else if(moji==="ぃ"){
@@ -2268,6 +2503,144 @@
             nameKanaNe(x,y+30);
         }else if(moji==="ノ"){
             nameKanaNo(x,y+30);
+        }else if(moji==="ハ"){
+            nameKanaHa(x,y+30);
+        }else if(moji==="ヒ"){
+            nameKanaHi(x,y+30);
+        }else if(moji==="フ"){
+            nameKanaHu(x,y+30);
+        }else if(moji==="ヘ"){
+            nameKanaHe(x,y+30);
+        }else if(moji==="ホ"){
+            nameKanaHo(x,y+30);
+        }else if(moji==="マ"){
+            nameKanaMa(x,y+30);
+        }else if(moji==="ミ"){
+            nameKanaMi(x,y+30);
+        }else if(moji==="ム"){
+            nameKanaMu(x,y+30);
+        }else if(moji==="メ"){
+            nameKanaMe(x,y+30);
+        }else if(moji==="モ"){
+            nameKanaMo(x,y+30);
+        }else if(moji==="ヤ"){
+            nameKanaYa(x,y+30);
+        }else if(moji==="ユ"){
+            nameKanaYu(x,y+30);
+        }else if(moji==="ヨ"){
+            nameKanaYo(x,y+30);
+        }else if(moji==="ラ"){
+            nameKanaRa(x,y+30);
+        }else if(moji==="リ"){
+            nameKanaRi(x,y+30);
+        }else if(moji==="ル"){
+            nameKanaRu(x,y+30);
+        }else if(moji==="レ"){
+            nameKanaRe(x,y+30);
+        }else if(moji==="ロ"){
+            nameKanaRo(x,y+30);
+        }else if(moji==="ワ"){
+            nameKanaWa(x,y+30);
+        }else if(moji==="ヲ"){
+            nameKanaWo(x,y+30);
+        }else if(moji==="ン"){
+            nameKanaNn(x,y+30);
+        }else if(moji==="ガ"){
+            nameKanaKa(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="ギ"){
+            nameKanaKi(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="グ"){
+            nameKanaKu(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ゲ"){
+            nameKanaKe(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="ゴ"){
+            nameKanaKo(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ザ"){
+            nameKanaSa(x,y+30);
+            nameDA(x+50,y);
+        }else if(moji==="ジ"){
+            nameKanaSi(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ズ"){
+            nameKanaSu(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ゼ"){
+            nameKanaSe(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="ゾ"){
+            nameKanaSo(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ダ"){
+            nameKanaTa(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ヂ"){
+            nameKanaTi(x,y+30);
+            nameDA(x+50,y);
+        }else if(moji==="ヅ"){
+            nameKanaTu(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="デ"){
+            nameKanaTe(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ド"){
+            nameKanaTo(x,y+30);
+            nameDA(x+40,y+20);
+        }else if(moji==="バ"){
+            nameKanaHa(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ビ"){
+            nameKanaHi(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="ブ"){
+            nameKanaHu(x,y+30);
+            nameDA(x+40,y);
+        }else if(moji==="ベ"){
+            nameKanaHe(x,y+30);
+            nameDA(x+40,y+20);
+        }else if(moji==="ボ"){
+            nameKanaHo(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="パ"){
+            nameKanaHa(x,y+30);
+            nameHD(x+40,y);
+        }else if(moji==="ピ"){
+            nameKanaHi(x,y+30);
+            nameHD(x+40,y);
+        }else if(moji==="プ"){
+            nameKanaHu(x,y+30);
+            nameHD(x+50,y);
+        }else if(moji==="ペ"){
+            nameKanaHe(x,y+30);
+            nameHD(x+50,y+20);
+        }else if(moji==="ポ"){
+            nameKanaHo(x,y+30);
+            nameHD(x+50,y+10);
+        }else if(moji==="ヴ"){
+            nameKanaU(x,y+30);
+            nameDA(x+40,y+10);
+        }else if(moji==="ァ"){
+            nameKanaA(x,y+30);
+        }else if(moji==="ィ"){
+            nameKanaI(x,y+30);
+        }else if(moji==="ゥ"){
+            nameKanaU(x,y+30);
+        }else if(moji==="ェ"){
+            nameKanaE(x,y+30);
+        }else if(moji==="ォ"){
+            nameKanaO(x,y+30);
+        }else if(moji==="ャ"){
+            nameKanaXYa(x-20,y+30);
+        }else if(moji==="ュ"){
+            nameKanaXYu(x-20,y+30);
+        }else if(moji==="ョ"){
+            nameKanaXYo(x-20,y+30);
+        }else if(moji==="ッ"){
+            nameKanaXTu(x-20,y+30);
         }
     }
 
@@ -2453,11 +2826,29 @@
         }
     }
 
+    const filingMain = (e) =>{
+        main_value = e.target.value;
+        bairitsu = Number(document.getElementById("sample").value);
+        displayText(main_value,bairitsu);
+        linkMake();
+    } 
+
+
     main.addEventListener("input",filingMain);
     ////////// ここを変更//////////
-    nameKanaNo(10,10); //最終的に消す
+    // nameKanaXTu(10,10); //最終的に消す
     ////////// ここを変更//////////
-    
+
+    const onLinkClick = () =>{
+        displayText(main_value,1);
+        let test = document.createElement('a');
+        test.href = canvas.toDataURL("image/jpeg");
+        test.download = 'draquefu.jpg';
+        test.click();
+        bairitsu = Number(document.getElementById("sample").value);
+        displayText(main_value,bairitsu);
+    }
+
 
     const linkMake = () =>{
         let x =document.querySelector("h3")
@@ -2465,13 +2856,16 @@
             x.removeChild(x.lastChild)
         }
         let link = document.createElement('a');
-        link.href = canvas.toDataURL("image/jpeg");
-        link.download = 'draquefu.jpg';
+        link.href = "javascript:onLinkClick();"
+        // link.href = canvas.toDataURL("image/jpeg");
+        // link.download = 'draquefu.jpg';
         link.textContent = "ダウンロード(JPG)"
         if(main_value!==""){
             document.querySelector("h3").appendChild(link);
         }
     }
+
+
 
 </script>
 </html>
